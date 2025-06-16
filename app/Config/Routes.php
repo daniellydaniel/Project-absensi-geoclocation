@@ -8,9 +8,14 @@
     $routes->get('logout', 'Login::logout');
 
     $routes->get('dashboard', 'Dashboard::index');
-    $routes->post('admin/notifikasi/clear', 'Admin\Notifikasi::clear');
+    $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], function ($routes) {
+        $routes->get('notifikasi', 'Notifikasi::index');
+        $routes->get('notifikasi/tandai_sudah_dibaca/(:num)', 'Notifikasi::tandai_sudah_dibaca/$1');
+        $routes->get('notifikasi/clear', 'Notifikasi::clear');
+    });
 
     $routes->get('admin/home', 'Admin\Home::index', ['filter' => 'AdminFilter']);
+    $routes->get('admin/home/getLokasiPegawai', 'Admin\Home::getLokasiPegawai', ['filter' => 'AdminFilter']);
     $routes->get('admin/jabatan', 'Admin\Jabatan::index', ['filter' => 'AdminFilter']);
     $routes->get('admin/jabatan/create', 'Admin\Jabatan::create', ['filter' => 'AdminFilter']);
     $routes->post('admin/jabatan/store', 'Admin\Jabatan::store', ['filter' => 'AdminFilter']);
@@ -50,6 +55,7 @@
     $routes->get('admin/rekap/export-pdf', 'Admin\RekapPresensi::export_pdf', ['filter' => 'AdminFilter']);
 
     $routes->get('pegawai/home', 'Pegawai\Home::index', ['filter' => 'PegawaiFilter']);
+
     $routes->post('pegawai/presensi_masuk', 'Pegawai\Home::presensi_masuk', ['filter' => 'PegawaiFilter']);
     $routes->get('pegawai/ambil_foto', 'Pegawai\Home::ambil_foto');
     $routes->post('pegawai/presensi_masuk_aksi', 'Pegawai\Home::presensi_masuk_aksi', ['filter' => 'PegawaiFilter']);
@@ -69,3 +75,17 @@
     $routes->post('pegawai/ketidakhadiran/update/(:segment)', 'Pegawai\Ketidakhadiran::update/$1', ['filter' => 'PegawaiFilter']);
     $routes->get('pegawai/ketidakhadiran/delete/(:segment)', 'Pegawai\Ketidakhadiran::delete/$1', ['filter' => 'PegawaiFilter']);
     $routes->get('pegawai/ketidakhadiran/detail/(:segment)', 'Pegawai\Ketidakhadiran::detail/$1', ['filter' => 'PegawaiFilter']);
+
+    // Rute untuk Kepala Sekolah
+    // =========================
+    $routes->group('kepsek', ['filter' => 'KepsekFilter'], function ($routes) {
+        $routes->get('home', 'Kepsek\Home::index');
+
+        // Panggil method dari controller Home
+        $routes->get('rekap_harian', 'Kepsek\Home::rekap_harian');
+        $routes->get('rekap_bulanan', 'Kepsek\Home::rekap_bulanan');
+
+        // Export
+        $routes->get('rekap/export-excel', 'Kepsek\RekapPresensi::export_excel');
+        $routes->get('rekap/export-pdf', 'Kepsek\RekapPresensi::export_pdf');
+    });

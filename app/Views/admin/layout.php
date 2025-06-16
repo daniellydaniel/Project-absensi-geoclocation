@@ -24,7 +24,9 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- datatables -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -60,7 +62,7 @@
           </a>
         </li>
 
-        
+
         <li class="nav-item nav-item-has-children mb-2">
           <a
             href="#0"
@@ -326,8 +328,11 @@
     <!-- sweetalert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- datatables -->
-    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+    <!-- YANG BENAR -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
 
     <!-- Leaflet js -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -337,10 +342,11 @@
     <?php var_dump(session()->getFlashdata('success')); ?>
 
     <script>
-      // datatables
-      $(document).ready(function() {
-        $('#datatables').DataTable();
+      $('#datatables').DataTable({
+        responsive: true, // aktifin fitur responsive
+        scrollX: true, // aktifin scroll horizontal
       });
+
 
       // sweetalert berhasil
       $(function() {

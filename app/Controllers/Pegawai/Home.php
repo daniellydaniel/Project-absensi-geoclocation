@@ -82,7 +82,19 @@ class Home extends BaseController
         $jarakmeter = $earthRadius * $c;
 
         if ($jarakmeter > $radius) {
-            // notifikasi error
+            // Simpan notifikasi gagal ke database
+            $notifikasiModel = new NotifikasiModel();
+            $notifikasiModel->insert([
+                'user_id' => session()->get('id_pegawai'),
+                'nama_pengirim' => session()->get('nama'),
+                'tipe' => 'presensi',
+                'jenis' => 'luar_radius',
+                'deskripsi' => 'Presensi gagal! Lokasi berada di luar radius kantor.',
+                'foto' => null,
+                'created_at' => date('Y-m-d H:i:s'),
+                'is_read' => 0
+            ]);
+
             session()->setFlashdata('gagal', '❌ Absensi gagal! Kamu berada di luar jangkauan lokasi.');
             return redirect()->to(base_url('pegawai/home'));
         } else {
@@ -93,11 +105,12 @@ class Home extends BaseController
                 'jam_masuk' => $this->request->getPost('jam_masuk'),
                 'latitude_masuk' => $this->request->getPost('latitude_pegawai'),
                 'longitude_masuk' => $this->request->getPost('longitude_pegawai'),
-                'foto_masuk' => $this->request->getPost('foto_masuk', FILTER_SANITIZE_STRING)
+                'foto_masuk' => $this->request->getPost('foto_masuk')
             ]);
             return redirect()->to(base_url('pegawai/ambil_foto'));
         }
     }
+
 
     public function ambil_foto()
     {
@@ -258,5 +271,39 @@ class Home extends BaseController
         ];
 
         return view('pegawai/ambil_foto_keluar', $data);
+    }
+
+    public function update_lokasi()
+    {
+        if ($this->request->isAJAX()) {
+            $lat = $this->request->getJSON()->latitude ?? null;
+            $lon = $this->request->getJSON()->longitude ?? null;
+            $id_pegawai = session()->get('id_pegawai');
+
+            if ($lat && $lon && $id_pegawai) {
+                $lokasiModel = new \App\Models\LokasiRealtimeModel();
+
+                // Kalau udah ada, update. Kalau belum, insert.
+                $existing = $lokasiModel->where('id_pegawai', $id_pegawai)->first();
+                if ($existing) {
+                    $lokasiModel->update($existing['id'], [
+                        'latitude' => $lat,
+                        'longitude' => $lon,
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ]);
+                } else {
+                    $lokasiModel->insert([
+                        'id_pegawai' => $id_pegawai,
+                        'latitude' => $lat,
+                        'longitude' => $lon,
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ]);
+                }
+
+                return $this->response->setJSON(['status' => 'success']);
+            }
+        }
+
+        return $this->response->setJSON(['status' => 'failed']);
     }
 }

@@ -71,14 +71,18 @@ class Login extends BaseController
         $routes = [
             'admin' => '/admin/home',
             'pegawai' => '/pegawai/home',
+            'kepsek'  => '/kepsek/home',
         ];
 
         if (isset($routes[$role])) {
             return redirect()->to($routes[$role]);
         }
 
-        $session->setFlashdata('pesan', 'Role "' . $role . '" tidak dikenali. Silakan hubungi administrator.');
-        return redirect()->back()->withInput();
+        $allowedRoles = ['admin', 'pegawai', 'kepsek'];
+        if (!in_array($role, $allowedRoles)) {
+            $session->setFlashdata('pesan', 'Role tidak dikenali. Silakan hubungi administrator.');
+            return redirect()->back()->withInput();
+        }
     }
     public function logout()
     {

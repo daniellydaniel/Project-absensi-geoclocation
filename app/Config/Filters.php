@@ -36,6 +36,7 @@ class Filters extends BaseFilters
         'performance'   => PerformanceMetrics::class,
         'AdminFilter'   => \App\Filters\AdminFilter::class,
         'PegawaiFilter'   => \App\Filters\PegawaiFilter::class,
+        'KepsekFilter'  => \App\Filters\KepsekFilter::class,
     ];
 
     /**
@@ -108,5 +109,6 @@ class Filters extends BaseFilters
     public array $filters = [
         'AdminFilter' => ['before' => ['admin/*']],
         'PegawaiFilter' => ['before' => ['pegawai/*']],
+        'KepsekFilter'  => ['before' => ['kepsek/*']],
     ];
 }

@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
+use App\Models\LokasiRealtimeModel;
 use App\Models\PegawaiModel;
 use App\Models\PresensiModel;
 use App\Models\LokasiPresensiModel;
@@ -13,6 +14,7 @@ class Home extends BaseController
 {
     public function index()
     {
+        $lokasiModel = new LokasiRealtimeModel();
         $pegawaiModel = new PegawaiModel();
         $presensiModel = new PresensiModel();
         $lokasipresensiModel = new LokasiPresensiModel();
@@ -92,6 +94,7 @@ class Home extends BaseController
         return redirect()->back()->with('success', 'Semua notifikasi telah dihapus.');
     }
 
+
     private function hitungJarak($lat1, $lon1, $lat2, $lon2)
     {
         $earthRadius = 6371000; // meter
@@ -102,5 +105,49 @@ class Home extends BaseController
             sin($dLon / 2) * sin($dLon / 2);
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
         return $earthRadius * $c;
+    }
+
+    public function getLokasiPegawai()
+    {
+        $presensiModel = new PresensiModel();
+        $lokasiPresensiModel = new LokasiPresensiModel();
+
+        $lokasiRaw = $lokasiPresensiModel->first();
+        $lokasi = $lokasiRaw ? [
+            'latitude' => floatval(trim($lokasiRaw['latitude'])),
+            'longitude' => floatval(trim($lokasiRaw['longitude'])),
+            'radius' => floatval(trim($lokasiRaw['radius']))
+        ] : [
+            'latitude' => 0,
+            'longitude' => 0,
+            'radius' => 0
+        ];
+
+        $rekapHarian = $presensiModel->rekap_harian();
+
+        $pegawaiDalamRadius = [];
+        $pegawaiLuarRadius = [];
+
+        foreach ($rekapHarian as $pegawai) {
+            $lat = isset($pegawai['latitude_masuk']) ? floatval($pegawai['latitude_masuk']) : 0;
+            $lng = isset($pegawai['longitude_masuk']) ? floatval($pegawai['longitude_masuk']) : 0;
+
+            if ($lat !== 0 && $lng !== 0) {
+                $pegawai['latitude'] = $lat;
+                $pegawai['longitude'] = $lng;
+
+                $jarak = $this->hitungJarak($lokasi['latitude'], $lokasi['longitude'], $lat, $lng);
+                if ($jarak <= $lokasi['radius']) {
+                    $pegawaiDalamRadius[] = $pegawai;
+                } else {
+                    $pegawaiLuarRadius[] = $pegawai;
+                }
+            }
+        }
+
+        return $this->response->setJSON([
+            'dalam' => $pegawaiDalamRadius,
+            'luar' => $pegawaiLuarRadius
+        ]);
     }
 }

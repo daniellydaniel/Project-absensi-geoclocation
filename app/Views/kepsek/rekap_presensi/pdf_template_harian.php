@@ -1,0 +1,202 @@
+<!-- app/Views/admin/rekap_presensi/pdf_template_harian.php -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan Absensi Harian</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            font-size: 11px;
+            padding: 20px;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+            margin: 0;
+        }
+
+        h1 { font-size: 20px; margin-bottom: 5px; }
+        h2 { font-size: 16px; margin-bottom: 3px; }
+        h3 { font-size: 14px; margin-bottom: 20px; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #444;
+            padding: 6px;
+            text-align: center;
+        }
+
+        thead {
+            background-color: #f0f0f0;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 60px;
+        }
+
+        .footer-note {
+            font-size: 10px;
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h2>SD Bethany School Indonesia Papua</h2>
+    <h1>Laporan Absensi Harian</h1>
+    <h3>Tanggal: <?= $tanggal ?? date('Y-m-d') ?></h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>NIP</th>
+                <th>Nama Pegawai</th>
+                <th>Jam Masuk</th>
+                <th>Jam Keluar</th>
+                <th>Total Jam Kerja</th>
+                <th>Keterlambatan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($rekap_harian)): ?>
+                <?php $no = 1; foreach ($rekap_harian as $data): ?>
+                    <tr>
+                        <td><?= $no++ ?></td>
+                        <td><?= htmlspecialchars($data['nip'] ?? '-') ?></td>
+                        <td><?= htmlspecialchars($data['nama'] ?? '-') ?></td>
+                        <td><?= htmlspecialchars($data['jam_masuk'] ?? '-') ?></td>
+                        <td><?= htmlspecialchars($data['jam_keluar'] ?? '-') ?></td>
+                        <td><?= htmlspecialchars($data['total_jam_kerja'] ?? '-') ?></td>
+                        <td><?= htmlspecialchars($data['total_keterlambatan'] ?? '-') ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="7">Data tidak tersedia</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+
+    <div class="signature">
+        <p>Jayapura, <?= date('d M Y') ?></p>
+        <br><br><br>
+        <p><strong>Kepala Sekolah</strong></p>
+        <p style="margin-top: 60px;"><u>(Nama Kepala Sekolah)</u></p>
+    </div>
+
+    <div class="footer-note">
+        * Laporan ini dihasilkan otomatis oleh sistem aplikasi presensi SD Bethany School
+    </div>
+</body>
+</html>
+<!-- app/Views/admin/rekap_presensi/pdf_template_harian.php -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan Absensi Harian</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            font-size: 11px;
+            padding: 20px;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+            margin: 0;
+        }
+
+        h1 { font-size: 20px; margin-bottom: 5px; }
+        h2 { font-size: 16px; margin-bottom: 3px; }
+        h3 { font-size: 14px; margin-bottom: 20px; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #444;
+            padding: 6px;
+            text-align: center;
+        }
+
+        thead {
+            background-color: #f0f0f0;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 60px;
+        }
+
+        .footer-note {
+            font-size: 10px;
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h2>SD Bethany School Indonesia Papua</h2>
+    <h1>Laporan Absensi Harian</h1>
+    <h3>Tanggal: <?= $tanggal ?? date('Y-m-d') ?></h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>NIP</th>
+                <th>Nama Pegawai</th>
+                <th>Jam Masuk</th>
+                <th>Jam Keluar</th>
+                <th>Total Jam Kerja</th>
+                <th>Keterlambatan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($rekap_harian)): ?>
+                <?php $no = 1; foreach ($rekap_harian as $data): ?>
+                    <tr>
+                        <td><?= $no++ ?></td>
+                        <td><?= htmlspecialchars($data['nip'] ?? '-') ?></td>
+                        <td><?= htmlspecialchars($data['nama'] ?? '-') ?></td>
+                        <td><?= htmlspecialchars($data['jam_masuk'] ?? '-') ?></td>
+                        <td><?= htmlspecialchars($data['jam_keluar'] ?? '-') ?></td>
+                        <td><?= htmlspecialchars($data['total_jam_kerja'] ?? '-') ?></td>
+                        <td><?= htmlspecialchars($data['total_keterlambatan'] ?? '-') ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="7">Data tidak tersedia</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+
+    <div class="signature">
+        <p>Jayapura, <?= date('d M Y') ?></p>
+        <br><br><br>
+        <p><strong>Kepala Sekolah</strong></p>
+        <p style="margin-top: 60px;"><u>(Nama Kepala Sekolah)</u></p>
+    </div>
+
+    <div class="footer-note">
+        * Laporan ini dihasilkan otomatis oleh sistem aplikasi presensi SD Bethany School
+    </div>
+</body>
+</html>

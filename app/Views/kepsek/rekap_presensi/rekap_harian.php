@@ -2,18 +2,16 @@
 
 /** @var \CodeIgniter\View\View $this */
 ?>
-<?= $this->extend('admin/layout.php') ?>
+<?= $this->extend('kepsek/layout.php') ?>
 
 <?= $this->section('content') ?>
 
-<style>
-    table {
-        min-width: 800px;
-        white-space: nowrap;
-    }
-</style>
-
 <div style="margin-left: 50px; margin-top: 20px; margin-right: 50px;">
+    <a href="<?= base_url('kepsek/home') ?>" class="btn btn-secondary btn-sm mb-3">
+        🔙 Kembali
+    </a>
+
+
     <form class="row g-2 align-items-center mb-3">
         <div class="col-auto">
             <input type="date" class="form-control form-control-sm" name="filter_tanggal" value="<?= $tanggal ?>">
@@ -33,12 +31,13 @@
 
     <div class="mb-3 d-flex gap-2">
         <?php $tglExport = $tanggal ?? date('Y-m-d'); ?>
-        <a href="<?= base_url('admin/rekap/export-excel?tanggal=' . $tglExport) ?>" class="btn btn-success btn-sm">
+        <a href="<?= base_url('kepsek/rekap/export-excel?tanggal=' . $tglExport) ?>" class="btn btn-success btn-sm">
             📅 Export Excel
         </a>
-        <a href="<?= base_url('admin/rekap/export-pdf?tanggal=' . $tglExport) ?>" class="btn btn-danger btn-sm">
+        <a href="<?= site_url('kepsek/rekap/export-pdf?tanggal=' . $tanggal) ?>" class="btn btn-danger">
             🧾 Export PDF
         </a>
+
 
     </div>
 
